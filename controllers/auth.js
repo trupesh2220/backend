@@ -20,17 +20,35 @@ export const register = async (req, res) => {
       firstName,
       lastName,
       email,
-      password:passwordHash,
+      password: passwordHash,
       picturePath,
       friends,
       location,
-      occupation,   
-      viewedProfile:Math.floor(Math.random() * 10000),
-      impressions:Math.floor(Math.random() * 10000),
+      occupation,
+      viewedProfile: Math.floor(Math.random() * 10000),
+      impressions: Math.floor(Math.random() * 10000),
     });
-    const savedUser = await NewUser.save()
-    res.status(201).json(savedUser)
+    const savedUser = await NewUser.save();
+    res.status(201).json(savedUser);
   } catch (error) {
-    res.status(500).json({error:error.message})
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email: email });
+    if (!user) {
+      res.status(400).json({ msg: "User does not exist" });
+    }
+    const isMatch = await bcrypt.compare(password,user.password)
+    if (!isMatch) {
+      res.status(400).json({message:"invalid credential"})
+    }
+    const token = jwt.sign({id:user._id},process.env.JWT_SECRET)
+    delete user.password
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
