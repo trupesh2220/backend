@@ -43,5 +43,5 @@ mongoose
     app.listen(PORT, () => {
       console.log('server connect successFull');
     });
-  }).catch((error)=>{console.log("server not connect")});
+  }).catch((error)=>{console.log(`server not connect ${error}`)});
 console.log("success");
