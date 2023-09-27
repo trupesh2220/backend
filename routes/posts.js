@@ -4,7 +4,7 @@ import { getFeedPosts, getUserPosts, likePost } from '../controllers/users'
 const router = express.Router()
 
 router.get("/",verifyToken,getFeedPosts)
-router.get("/:id/friends",verifyToken,getUserFriends)
-router.patch("/:id/friendId",verifyToken,addRemoveFriend)
+router.get("/:userId/posts",verifyToken,getUserPosts)
+router.patch("/:id/like",verifyToken,likePost)
 
 export default router
